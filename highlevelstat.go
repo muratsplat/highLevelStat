@@ -6,17 +6,35 @@
 // the percent of cpu(s) usage, mem, network, disk and something like that..
 //
 // The package is experimental!!!
-// Examle use
+//
+// Examle use:
+//
+//package main
+//
+//import (
+//    "fmt"
+//    "github.com/MURATSPLAT/highLevelStat"
+//
+//)
 //
 //func main() {
-//	go func() {
-//		var status SystemStatus
-//		for {
-//			fmt.Printf("Cpu(s): %.2f%%\n", status.getCpuUsage().CpuUsage)
-//		}
-//	}()
-//	var input string
-//	fmt.Scanln(&input)
+//
+//    go func() {
+//
+//        for {
+//
+//            var test highlevelstat.SystemStatus
+//
+//            fmt.Printf("Cpu(s): %.f%%\n", test.GetCpuUsage().CpuUsage)
+//
+//        }
+//
+//    }()
+//
+//    var input string
+//
+//    fmt.Scanln(&input)
+//
 //}
 package highlevelstat
 
@@ -89,7 +107,7 @@ type SystemStatus struct {
 
 // The package's values
 var (
-	sampleRangeOfTime   float64 = 300 // it is converted Type of Milisecond
+	sampleRangeOfTime   float64 = 300 // it  will convert to type of Milisecond
 	pathProcStatOnLinux string  = "/proc/stat"
 )
 

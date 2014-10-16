@@ -109,6 +109,15 @@ func (s *SystemStatus) GetCpuUsage() *SystemStatus {
 	workOverPeriod := float32(snapshots[1].cpus.sumOfUserNiceSystemAllCpu - snapshots[0].cpus.sumOfUserNiceSystemAllCpu)
 	totalOverPeriod := float32(snapshots[1].cpus.sumOfallCpu - snapshots[0].cpus.sumOfallCpu)
 
+	// fixes issue that the cases of workOverPeriod  equals to
+	// totalOverPeriod
+	if workOverPeriod == totalOverPeriod {
+
+		s.CpuUsage = float32(0)
+
+		return s
+	}
+
 	s.CpuUsage = float32((workOverPeriod / totalOverPeriod) * 100.00)
 
 	return s
