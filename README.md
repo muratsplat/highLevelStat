@@ -1,5 +1,7 @@
 highLevelStat
 =============
+[![Build Status](https://travis-ci.org/MURATSPLAT/highLevelStat.svg)](https://travis-ci.org/MURATSPLAT/highLevelStat)
+
 
 A basic library that gets system the percent of cpu(s) usage 
 
