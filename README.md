@@ -40,6 +40,19 @@ func main() {
 
 ```
 
+output:
+----------------
+Cpu(s): 0%
+Cpu(s): 7%
+Cpu(s): 0%
+Cpu(s): 3%
+Cpu(s): 0%
+Cpu(s): 0%
+Cpu(s): 3%
+Cpu(s): 3%
+Cpu(s): 0%
+------------------
+
 
 
 

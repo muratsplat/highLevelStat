@@ -1,267 +1,269 @@
-    // The package simply generates the information of system status such as
-    // the percent of cpu(s) usage, mem, network, disk and something like that..
-    //
-    // The package is experimental!!!
-
-    // Copyright (C) 2014  Murat ÖDÜNÇ
-    // See LICENSES.md file to know details the license
-
-    import (
-    	"bufio"
-    	"log"
-    	"os"
-    	"runtime"
-    	"strconv"
-    	str "strings"
-    	"time"
-    )
+// The package simply generates the information of system status such as
+// the percent of cpu(s) usage, mem, network, disk and something like that..
+//
+// The package is experimental!!!
+
+// Copyright (C) 2014  Murat ÖDÜNÇ
+// See LICENSES.md file to know details the license
 
-    // Environment Struct
-    type env struct {
-    	nameOs       string
-    	support      bool
-    	numberOfCpus int
-    	err          error
-    }
+package highlavelstat
+
+import (
+	"bufio"
+	"log"
+	"os"
+	"runtime"
+	"strconv"
+	str "strings"
+	"time"
+)
 
-    //  This struct  is for each one of all cpus
-    // referance : http://www.linuxhowtos.org/System/procstat.htm
-    type sampleCpuStat struct {
+// Environment Struct
+type env struct {
+	nameOs       string
+	support      bool
+	numberOfCpus int
+	err          error
+}
 
-    	// processes executing is user mode
-    	//such as Firefox, Mplayer...
-    	user uint64
+//  This struct  is for each one of all cpus
+// referance : http://www.linuxhowtos.org/System/procstat.htm
+type sampleCpuStat struct {
 
-    	nice uint64
+	// processes executing is user mode
+	//such as Firefox, Mplayer...
+	user uint64
 
-    	// processes executing is system mode
-    	//such as kernel processes
-    	system uint64
+	nice uint64
 
-    	//idle: twiddling thumbs
-    	idle uint64
+	// processes executing is system mode
+	//such as kernel processes
+	system uint64
 
-    	//iowait: waiting for I/O to complete
-    	iowait uint64
+	//idle: twiddling thumbs
+	idle uint64
 
-    	//irq: servicing interrupts
-    	irq uint64
+	//iowait: waiting for I/O to complete
+	iowait uint64
 
-    	//softirq: servicing softirqs
-    	softirq uint64
+	//irq: servicing interrupts
+	irq uint64
 
-    	// sum of total all values
-    	sumOfall uint64
+	//softirq: servicing softirqs
+	softirq uint64
 
-    	// sum of user, nice  and system
-    	sumOfUserNiceSystem uint64
-    }
+	// sum of total all values
+	sumOfall uint64
 
-    // This struct will include the sample of all CPU(s)
-    type sampleCPUS struct {
-    	allCpu []sampleCpuStat
+	// sum of user, nice  and system
+	sumOfUserNiceSystem uint64
+}
 
-    	// sum of total all values
-    	sumOfallCpu uint64
+// This struct will include the sample of all CPU(s)
+type sampleCPUS struct {
+	allCpu []sampleCpuStat
 
-    	// sum of user, nice  and system
-    	sumOfUserNiceSystemAllCpu uint64
-    }
+	// sum of total all values
+	sumOfallCpu uint64
 
-    type snapShotsCPU struct {
-    	cpus sampleCPUS
-    }
+	// sum of user, nice  and system
+	sumOfUserNiceSystemAllCpu uint64
+}
 
-    // System Status struct is readable for human
-    type SystemStatus struct {
-    	// all cpu usage
-    	CpuUsage float32
-    }
+type snapShotsCPU struct {
+	cpus sampleCPUS
+}
 
-    // The package's values
-    var (
-    	sampleRangeOfTime   float64 = 300 // it is converted Type of Milisecond
-    	pathProcStatOnLinux string  = "/proc/stat"
-    )
+// System Status struct is readable for human
+type SystemStatus struct {
+	// all cpu usage
+	CpuUsage float32
+}
 
-    // to detect environment. Unit now only Gnu/linux Os is supported.
-    // it can be added other os such as MacOSX, Free-Open BSD Unix maybe MS Windows.
-    func (env *env) detectEnv() *env {
+// The package's values
+var (
+	sampleRangeOfTime   float64 = 300 // it is converted Type of Milisecond
+	pathProcStatOnLinux string  = "/proc/stat"
+)
 
-    	env.nameOs = runtime.GOOS
+// to detect environment. Unit now only Gnu/linux Os is supported.
+// it can be added other os such as MacOSX, Free-Open BSD Unix maybe MS Windows.
+func (env *env) detectEnv() *env {
 
-    	switch true {
-    	case "linux" == env.nameOs:
-    		env.support = true
-    	default:
-    		env.support = false
-    	}
+	env.nameOs = runtime.GOOS
 
-    	env.numberOfCpus = runtime.NumCPU()
+	switch true {
+	case "linux" == env.nameOs:
+		env.support = true
+	default:
+		env.support = false
+	}
 
-    	return env
+	env.numberOfCpus = runtime.NumCPU()
 
-    }
+	return env
 
-    // to ckeck that the os is supperted
-    func (env *env) IsSupported() (support bool) {
+}
 
-    	return env.detectEnv().support
-    }
+// to ckeck that the os is supperted
+func (env *env) IsSupported() (support bool) {
 
-    // to convert string struct to unit64 struct
-    func convertStringToUint64(s string) uint64 {
+	return env.detectEnv().support
+}
 
-    	number, err := strconv.ParseUint(s, 0, 64)
+// to convert string struct to unit64 struct
+func convertStringToUint64(s string) uint64 {
 
-    	if err == nil {
+	number, err := strconv.ParseUint(s, 0, 64)
 
-    		return number
+	if err == nil {
 
-    	}
+		return number
 
-    	return number
-    }
+	}
 
-    // to take snapshot that state sample of CPU(s)
-    // between in first time point and second time point.
-    func (sample sampleCPUS) takeSnapShot() sampleCPUS {
+	return number
+}
 
-    	var e env
+// to take snapshot that state sample of CPU(s)
+// between in first time point and second time point.
+func (sample sampleCPUS) takeSnapShot() sampleCPUS {
 
-    	if e.IsSupported() == false {
+	var e env
 
-    		log.Fatalln("Your Os is not supported!")
+	if e.IsSupported() == false {
 
-    		os.Exit(1)
-    	}
+		log.Fatalln("Your Os is not supported!")
 
-    	file, err := os.Open(pathProcStatOnLinux)
-    	if err != nil {
+		os.Exit(1)
+	}
 
-    		log.Fatalln("It looks that the file was not existed: ", pathProcStatOnLinux)
+	file, err := os.Open(pathProcStatOnLinux)
+	if err != nil {
 
-    	}
+		log.Fatalln("It looks that the file was not existed: ", pathProcStatOnLinux)
 
-    	defer file.Close()
+	}
 
-    	scanner := bufio.NewScanner(file)
+	defer file.Close()
 
-    	cpuStat := make([]sampleCpuStat, e.numberOfCpus)
+	scanner := bufio.NewScanner(file)
 
-    	for i := 0; scanner.Scan(); i++ {
+	cpuStat := make([]sampleCpuStat, e.numberOfCpus)
 
-    		// user: normal processes executing in user mode
-    		cpuStat[i].user = convertStringToUint64(str.Fields(scanner.Text())[1])
+	for i := 0; scanner.Scan(); i++ {
 
-    		// nice: niced processes executing in user mode
-    		cpuStat[i].nice = convertStringToUint64(str.Fields(scanner.Text())[2])
+		// user: normal processes executing in user mode
+		cpuStat[i].user = convertStringToUint64(str.Fields(scanner.Text())[1])
 
-    		// system: processes executing in kernel mode
-    		cpuStat[i].system = convertStringToUint64(str.Fields(scanner.Text())[3])
+		// nice: niced processes executing in user mode
+		cpuStat[i].nice = convertStringToUint64(str.Fields(scanner.Text())[2])
 
-    		// idle: twiddling thumbs
-    		cpuStat[i].idle = convertStringToUint64(str.Fields(scanner.Text())[4])
+		// system: processes executing in kernel mode
+		cpuStat[i].system = convertStringToUint64(str.Fields(scanner.Text())[3])
 
-    		// iowait: waiting for I/O to complete
-    		cpuStat[i].iowait = convertStringToUint64(str.Fields(scanner.Text())[5])
+		// idle: twiddling thumbs
+		cpuStat[i].idle = convertStringToUint64(str.Fields(scanner.Text())[4])
 
-    		//irq: servicing
-    		cpuStat[i].irq = convertStringToUint64(str.Fields(scanner.Text())[6])
+		// iowait: waiting for I/O to complete
+		cpuStat[i].iowait = convertStringToUint64(str.Fields(scanner.Text())[5])
 
-    		//softirq: servicing softirqs
-    		cpuStat[i].softirq = convertStringToUint64(str.Fields(scanner.Text())[7])
+		//irq: servicing
+		cpuStat[i].irq = convertStringToUint64(str.Fields(scanner.Text())[6])
 
-    		// calculate things that have to
-    		cpuStat[i].calculateToAll()
+		//softirq: servicing softirqs
+		cpuStat[i].softirq = convertStringToUint64(str.Fields(scanner.Text())[7])
 
-    		if i == e.numberOfCpus-1 {
+		// calculate things that have to
+		cpuStat[i].calculateToAll()
 
-    			break // we need only cpu data rather than others
-    		}
+		if i == e.numberOfCpus-1 {
 
-    	}
+			break // we need only cpu data rather than others
+		}
 
-    	sample.allCpu = cpuStat
+	}
 
-    	return sample
+	sample.allCpu = cpuStat
 
-    }
+	return sample
 
-    // To calculate the plus of single cpu values
-    func (cpu *sampleCpuStat) calculateToAll() {
+}
 
-    	cpu.sumOfall = cpu.idle + cpu.iowait + cpu.irq + cpu.nice + cpu.softirq + cpu.system + cpu.user
+// To calculate the plus of single cpu values
+func (cpu *sampleCpuStat) calculateToAll() {
 
-    	cpu.sumOfUserNiceSystem = cpu.nice + cpu.system + cpu.user
+	cpu.sumOfall = cpu.idle + cpu.iowait + cpu.irq + cpu.nice + cpu.softirq + cpu.system + cpu.user
 
-    }
+	cpu.sumOfUserNiceSystem = cpu.nice + cpu.system + cpu.user
 
-    // To calculate the plus of all cpus values
-    func (s *sampleCPUS) sumTotal() {
+}
 
-    	for i := 0; i < len(s.allCpu); {
+// To calculate the plus of all cpus values
+func (s *sampleCPUS) sumTotal() {
 
-    		s.sumOfallCpu = s.allCpu[i].sumOfall
-    		s.sumOfUserNiceSystemAllCpu = s.allCpu[i].sumOfUserNiceSystem
-    		i++
-    	}
+	for i := 0; i < len(s.allCpu); {
 
-    }
+		s.sumOfallCpu = s.allCpu[i].sumOfall
+		s.sumOfUserNiceSystemAllCpu = s.allCpu[i].sumOfUserNiceSystem
+		i++
+	}
 
-    // To get the percent of CPU(s) usage
-    func (s *SystemStatus) GetCpuUsage() *SystemStatus {
+}
 
-    	var snaps snapShotsCPU
+// To get the percent of CPU(s) usage
+func (s *SystemStatus) GetCpuUsage() *SystemStatus {
 
-    	snapshots := snaps.getSnapShots()
+	var snaps snapShotsCPU
 
-    	workOverPeriod := float32(snapshots[1].cpus.sumOfUserNiceSystemAllCpu - snapshots[0].cpus.sumOfUserNiceSystemAllCpu)
-    	totalOverPeriod := float32(snapshots[1].cpus.sumOfallCpu - snapshots[0].cpus.sumOfallCpu)
+	snapshots := snaps.getSnapShots()
 
-    	s.CpuUsage = float32((workOverPeriod / totalOverPeriod) * 100.00)
+	workOverPeriod := float32(snapshots[1].cpus.sumOfUserNiceSystemAllCpu - snapshots[0].cpus.sumOfUserNiceSystemAllCpu)
+	totalOverPeriod := float32(snapshots[1].cpus.sumOfallCpu - snapshots[0].cpus.sumOfallCpu)
 
-    	return s
+	s.CpuUsage = float32((workOverPeriod / totalOverPeriod) * 100.00)
 
-    }
+	return s
 
-    func (s *snapShotsCPU) getSnapShots() []snapShotsCPU {
+}
 
-    	var samples sampleCPUS
+func (s *snapShotsCPU) getSnapShots() []snapShotsCPU {
 
-    	snapShots := make([]snapShotsCPU, 2)
+	var samples sampleCPUS
 
-    	for i := 0; i < len(snapShots); {
+	snapShots := make([]snapShotsCPU, 2)
 
-    		snapShots[i].cpus = samples.takeSnapShot()
-    		snapShots[i].cpus.sumTotal()
+	for i := 0; i < len(snapShots); {
 
-    		i++
+		snapShots[i].cpus = samples.takeSnapShot()
+		snapShots[i].cpus.sumTotal()
 
-    		time.Sleep(time.Millisecond * time.Duration(sampleRangeOfTime))
+		i++
 
-    	}
+		time.Sleep(time.Millisecond * time.Duration(sampleRangeOfTime))
 
-    	return snapShots
-    }
+	}
 
-    // Examle use
+	return snapShots
+}
 
-    //func main() {
+// Examle use
 
-    //	go func() {
+//func main() {
 
-    //		var status SystemStatus
+//	go func() {
 
-    //		for {
+//		var status SystemStatus
 
-    //			fmt.Printf("Cpu(s): %.2f%%\n", status.getCpuUsage().CpuUsage)
-    //		}
+//		for {
 
-    //	}()
+//			fmt.Printf("Cpu(s): %.2f%%\n", status.getCpuUsage().CpuUsage)
+//		}
 
-    //	var input string
+//	}()
 
-    //	fmt.Scanln(&input)
+//	var input string
 
-    //}
+//	fmt.Scanln(&input)
+
+//}
