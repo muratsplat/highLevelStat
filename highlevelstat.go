@@ -6,7 +6,19 @@
 // the percent of cpu(s) usage, mem, network, disk and something like that..
 //
 // The package is experimental!!!
-package highlavelstat
+// Examle use
+//
+//func main() {
+//	go func() {
+//		var status SystemStatus
+//		for {
+//			fmt.Printf("Cpu(s): %.2f%%\n", status.getCpuUsage().CpuUsage)
+//		}
+//	}()
+//	var input string
+//	fmt.Scanln(&input)
+//}
+package highlevelstat
 
 import (
 	"runtime"
@@ -119,24 +131,3 @@ func convertStringToUint64(s string) uint64 {
 
 	return number
 }
-
-// Examle use
-
-//func main() {
-
-//	go func() {
-
-//		var status SystemStatus
-
-//		for {
-
-//			fmt.Printf("Cpu(s): %.2f%%\n", status.getCpuUsage().CpuUsage)
-//		}
-
-//	}()
-
-//	var input string
-
-//	fmt.Scanln(&input)
-
-//}

@@ -1,5 +1,9 @@
+// Copyright (C) 2014  Murat ÖDÜNÇ
+// murat.asya@gmail.com, http://muratodunc.wordpress.com
+// See LICENSES.md file to know details the license
+
 // CPU(s) State
-package highlavelstat
+package highlevelstat
 
 import (
 	"bufio"
