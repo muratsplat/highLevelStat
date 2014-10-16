@@ -124,7 +124,7 @@ func (s *SystemStatus) GetCpuUsage() *SystemStatus {
 
 }
 
-// To get two snaphots of cpu(s) states
+// To get two snaphots of cpu(s) state
 func (s *snapShotsCPU) getSnapShots() []snapShotsCPU {
 
 	var samples sampleCPUS

@@ -73,9 +73,6 @@ func TestGetSnapShots(t *testing.T) {
 
 	var tS snapShotsCPU
 
-	// let's use our stat file
-	pathProcStatOnLinux = "./testFiles/proc_stat1"
-
 	snaps := tS.getSnapShots()
 
 	if len(snaps) != 2 {
