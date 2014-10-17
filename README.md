@@ -54,3 +54,14 @@ Cpu(s): 3%
 Cpu(s): 3%
 Cpu(s): 0%
 ```
+Installing
+----------
+Run
+
+    go get github.com/MURATSPLAT/highLevelStat
+
+Include in your source code:
+
+    import "github.com/MURATSPLAT/highLevelStat"
+
+
