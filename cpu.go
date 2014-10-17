@@ -41,6 +41,8 @@ func (sample sampleCPUS) takeSnapShot() sampleCPUS {
 
 	for i := 0; scanner.Scan(); i++ {
 
+		log.Println("cpuStat len: ", len(cpuStat))
+
 		// user: normal processes executing in user mode
 		cpuStat[i].user = convertStringToUint64(str.Fields(scanner.Text())[1])
 
