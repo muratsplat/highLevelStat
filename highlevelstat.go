@@ -84,19 +84,8 @@ type sampleCpuStat struct {
 	sumOfUserNiceSystem uint64
 }
 
-// This struct will include the sample of all CPU(s)
-type sampleCPUS struct {
-	allCpu []sampleCpuStat
-
-	// sum of total all values
-	sumOfallCpu uint64
-
-	// sum of user, nice  and system
-	sumOfUserNiceSystemAllCpu uint64
-}
-
 type snapShotsCPU struct {
-	cpus sampleCPUS
+	cpu sampleCpuStat
 }
 
 // System Status struct is readable for human

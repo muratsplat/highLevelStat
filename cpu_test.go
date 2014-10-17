@@ -13,60 +13,47 @@ func TestTakeSnapShot(t *testing.T) {
 	// let's use our stat file
 	pathProcStatOnLinux = "./testFiles/proc_stat1"
 
-	var testSample sampleCPUS
+	var testSample snapShotsCPU
 
-	var tsample sampleCPUS = testSample.takeSnapShot()
+	var tsample snapShotsCPU = testSample.takeSnapShot()
 
-	if len(tsample.allCpu) != 4 {
+	if tsample.cpu.user == uint64(0) {
 
-		t.Error("Expected 4, got", len(tsample.allCpu))
+		t.Error("Expected the value should not 0, got", tsample.cpu.user)
 	}
 
-	if tsample.allCpu[0].user == uint64(0) {
+	if tsample.cpu.system == uint64(0) {
 
-		t.Error("Expected the value is not 0, got", tsample.sumOfUserNiceSystemAllCpu)
+		t.Error("Expected the value should not 0, got", tsample.cpu.system)
 	}
 
-	for _, v := range tsample.allCpu {
+	if tsample.cpu.idle == uint64(0) {
 
-		if v.user == uint64(0) {
+		t.Error("Expected the value should not 0, got", tsample.cpu.idle)
+	}
 
-			t.Error("Expected the value should not 0, got", v.user)
-		}
+	if tsample.cpu.nice == uint64(0) {
 
-		if v.system == uint64(0) {
+		t.Error("Expected the value should not 0, got", tsample.cpu.nice)
+	}
 
-			t.Error("Expected the value should not 0, got", v.system)
-		}
+	if tsample.cpu.iowait == uint64(0) {
 
-		if v.idle == uint64(0) {
+		t.Error("Expected the value should not 0, got", tsample.cpu.iowait)
+	}
 
-			t.Error("Expected the value should not 0, got", v.idle)
-		}
+	if tsample.cpu.sumOfall == uint64(0) {
 
-		if v.nice == uint64(0) {
-
-			t.Error("Expected the value should not 0, got", v.nice)
-		}
-
-		if v.iowait == uint64(0) {
-
-			t.Error("Expected the value should not 0, got", v.iowait)
-		}
-
-		if v.sumOfall == uint64(0) {
-
-			t.Error("Expected the value should not 0, got", v.sumOfall)
-
-		}
-
-		if v.sumOfUserNiceSystem == uint64(0) {
-
-			t.Error("Expected the value should not 0, got", v.sumOfUserNiceSystem)
-
-		}
+		t.Error("Expected the value should not 0, got", tsample.cpu.sumOfall)
 
 	}
+
+	if tsample.cpu.sumOfUserNiceSystem == uint64(0) {
+
+		t.Error("Expected the value should not 0, got", tsample.cpu.sumOfUserNiceSystem)
+
+	}
+
 }
 
 func TestGetSnapShots(t *testing.T) {
@@ -82,7 +69,7 @@ func TestGetSnapShots(t *testing.T) {
 
 	for _, v := range snaps {
 
-		if len(v.cpus.allCpu) != 4 || v.cpus.sumOfallCpu+v.cpus.sumOfUserNiceSystemAllCpu == uint64(0) {
+		if v.cpu.sumOfUserNiceSystem+v.cpu.sumOfall == uint64(0) {
 
 			t.Error("It looks that samples is invalid!!!")
 

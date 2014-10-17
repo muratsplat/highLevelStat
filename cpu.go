@@ -13,9 +13,9 @@ import (
 	"time"
 )
 
-// to take snapshot that state sample of CPU(s)
+// to take snapshot that state CPU
 // between in first time point and second time point.
-func (sample sampleCPUS) takeSnapShot() sampleCPUS {
+func (sample snapShotsCPU) takeSnapShot() snapShotsCPU {
 
 	var e env
 
@@ -37,44 +37,35 @@ func (sample sampleCPUS) takeSnapShot() sampleCPUS {
 
 	scanner := bufio.NewScanner(file)
 
-	cpuStat := make([]sampleCpuStat, e.numberOfCpus)
-
 	for i := 0; scanner.Scan(); i++ {
 
-		log.Println("cpuStat len: ", len(cpuStat))
-
 		// user: normal processes executing in user mode
-		cpuStat[i].user = convertStringToUint64(str.Fields(scanner.Text())[1])
+		sample.cpu.user = convertStringToUint64(str.Fields(scanner.Text())[1])
 
 		// nice: niced processes executing in user mode
-		cpuStat[i].nice = convertStringToUint64(str.Fields(scanner.Text())[2])
+		sample.cpu.nice = convertStringToUint64(str.Fields(scanner.Text())[2])
 
 		// system: processes executing in kernel mode
-		cpuStat[i].system = convertStringToUint64(str.Fields(scanner.Text())[3])
+		sample.cpu.system = convertStringToUint64(str.Fields(scanner.Text())[3])
 
 		// idle: twiddling thumbs
-		cpuStat[i].idle = convertStringToUint64(str.Fields(scanner.Text())[4])
+		sample.cpu.idle = convertStringToUint64(str.Fields(scanner.Text())[4])
 
 		// iowait: waiting for I/O to complete
-		cpuStat[i].iowait = convertStringToUint64(str.Fields(scanner.Text())[5])
+		sample.cpu.iowait = convertStringToUint64(str.Fields(scanner.Text())[5])
 
 		//irq: servicing
-		cpuStat[i].irq = convertStringToUint64(str.Fields(scanner.Text())[6])
+		sample.cpu.irq = convertStringToUint64(str.Fields(scanner.Text())[6])
 
 		//softirq: servicing softirqs
-		cpuStat[i].softirq = convertStringToUint64(str.Fields(scanner.Text())[7])
+		sample.cpu.softirq = convertStringToUint64(str.Fields(scanner.Text())[7])
 
 		// calculate things that have to
-		cpuStat[i].calculateToAll()
+		sample.cpu.calculateToAll()
 
-		if i == e.numberOfCpus-1 {
-
-			break // we need only cpu data rather than others
-		}
+		break // we need only cpu data rather than multicores
 
 	}
-
-	sample.allCpu = cpuStat
 
 	return sample
 
@@ -89,18 +80,6 @@ func (cpu *sampleCpuStat) calculateToAll() {
 
 }
 
-// To calculate the plus of all cpus values
-func (s *sampleCPUS) sumTotal() {
-
-	for i := 0; i < len(s.allCpu); {
-
-		s.sumOfallCpu = s.allCpu[i].sumOfall
-		s.sumOfUserNiceSystemAllCpu = s.allCpu[i].sumOfUserNiceSystem
-		i++
-	}
-
-}
-
 // To get the percent of CPU(s) usage
 func (s *SystemStatus) GetCpuUsage() *SystemStatus {
 
@@ -108,8 +87,8 @@ func (s *SystemStatus) GetCpuUsage() *SystemStatus {
 
 	snapshots := snaps.getSnapShots()
 
-	workOverPeriod := float32(snapshots[1].cpus.sumOfUserNiceSystemAllCpu - snapshots[0].cpus.sumOfUserNiceSystemAllCpu)
-	totalOverPeriod := float32(snapshots[1].cpus.sumOfallCpu - snapshots[0].cpus.sumOfallCpu)
+	workOverPeriod := float32(snapshots[1].cpu.sumOfUserNiceSystem - snapshots[0].cpu.sumOfUserNiceSystem)
+	totalOverPeriod := float32(snapshots[1].cpu.sumOfall - snapshots[0].cpu.sumOfall)
 
 	// fixes issue that the cases of workOverPeriod  equals to
 	// totalOverPeriod
@@ -129,14 +108,13 @@ func (s *SystemStatus) GetCpuUsage() *SystemStatus {
 // To get two snaphots of cpu(s) state
 func (s *snapShotsCPU) getSnapShots() []snapShotsCPU {
 
-	var samples sampleCPUS
+	var samples snapShotsCPU
 
 	snapShots := make([]snapShotsCPU, 2)
 
 	for i := 0; i < len(snapShots); {
 
-		snapShots[i].cpus = samples.takeSnapShot()
-		snapShots[i].cpus.sumTotal()
+		snapShots[i] = samples.takeSnapShot()
 
 		i++
 
