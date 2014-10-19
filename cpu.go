@@ -80,8 +80,8 @@ func (cpu *sampleCpuStat) calculateToAll() {
 
 }
 
-// To get the percent of CPU(s) usage
-func (s *SystemStatus) GetCpuUsage() *SystemStatus {
+// To get the percent of CPU(s) usage on linux
+func (s *SystemStatus) getCpuUsageLinux() *SystemStatus {
 
 	var snaps snapShotsCPU
 

@@ -138,3 +138,19 @@ func convertStringToUint64(s string) uint64 {
 
 	return number
 }
+
+// To get the percent of CPU(s) usage
+func (s *SystemStatus) GetCpuUsage() *SystemStatus {
+
+	var e env
+
+	// let's select Os that's supported
+	switch e.detectEnv().nameOs {
+
+	case "linux":
+		return s.getCpuUsageLinux()
+	default:
+		return s
+	}
+
+}
