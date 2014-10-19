@@ -130,9 +130,9 @@ func convertStringToUint64(s string) uint64 {
 
 	number, err := strconv.ParseUint(s, 0, 64)
 
-	if err == nil {
+	if err != nil {
 
-		return number
+		return uint64(0)
 
 	}
 
