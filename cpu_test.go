@@ -1,8 +1,5 @@
-// Copyright (C) 2014  Murat ÖDÜNÇ
-// murat.asya@gmail.com, http://muratodunc.wordpress.com
-// See LICENSES.md file to know details the license
+// +build linux
 
-// Tests for CPU(s) State
 package highlevelstat
 
 import (

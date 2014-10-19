@@ -1,8 +1,5 @@
-// Copyright (C) 2014  Murat ÖDÜNÇ
-// murat.asya@gmail.com, http://muratodunc.wordpress.com
-// See LICENSES.md file to know details the license
+// +build linux
 
-// CPU(s) State
 package highlevelstat
 
 import (
@@ -81,7 +78,7 @@ func (cpu *sampleCpuStat) calculateToAll() {
 }
 
 // To get the percent of CPU(s) usage on linux
-func (s *SystemStatus) getCpuUsageLinux() *SystemStatus {
+func (s *SystemStatus) GetCpuUsage() *SystemStatus {
 
 	var snaps snapShotsCPU
 
