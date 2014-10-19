@@ -3,11 +3,13 @@ highLevelStat
 [![Build Status](https://travis-ci.org/MURATSPLAT/highLevelStat.svg)](https://travis-ci.org/MURATSPLAT/highLevelStat)
 
 
-A basic library that gets system the percent of cpu(s) usage 
+A basic Go Package that gets system the percent of cpu(s) usage on only Gnu/Linux Os.
 
 I'm new in Go Language and this library is my first library in go. I want to improve my go skils by writing go code more and more.
 
-The package is high level to access  the information of system status.
+The package is high level to access  the information of system status. 
+
+Probably I will not support the package at long term support.
 
 It likes this:
 
