@@ -60,7 +60,7 @@ Installing
 ----------
  to download the package by using "get" parameter via go such as..
 ```sh
-    go get github.com/MURATSPLAT/highLevelStat
+$ go get github.com/MURATSPLAT/highLevelStat
 ```
 Include in your source code:
 
