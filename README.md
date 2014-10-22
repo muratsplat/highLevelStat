@@ -58,10 +58,10 @@ Cpu(s): 0%
 ```
 Installing
 ----------
-Run
-
+ to download the package by using "get" parameter via go such as..
+```sh
     go get github.com/MURATSPLAT/highLevelStat
-
+```
 Include in your source code:
 
     import "github.com/MURATSPLAT/highLevelStat"
