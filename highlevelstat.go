@@ -92,6 +92,8 @@ type snapShotsCPU struct {
 type SystemStatus struct {
 	// all cpu usage
 	CpuUsage float32
+
+	MemInfo
 }
 
 // The package's values

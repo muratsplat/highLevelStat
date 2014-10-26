@@ -30,7 +30,7 @@ func main() {
 
 			var test highlevelstat.SystemStatus
 
-			fmt.Printf("Cpu(s): %.f%%\n", test.GetCpuUsage().CpuUsage)
+			fmt.Printf("Cpu(s): %.f%% UsedMem: %.f%%\n", test.GetCpuUsage().CpuUsage, test.GetMemInfo().PercentOfUsedMemForHuman)
 
 		}
 
@@ -46,15 +46,16 @@ func main() {
 
 output:
 ```sh
-Cpu(s): 0%
-Cpu(s): 7%
-Cpu(s): 0%
-Cpu(s): 3%
-Cpu(s): 0%
-Cpu(s): 0%
-Cpu(s): 3%
-Cpu(s): 3%
-Cpu(s): 0%
+Cpu(s): 11% UsedMem: 32%
+Cpu(s): 13% UsedMem: 32%
+Cpu(s): 12% UsedMem: 32%
+Cpu(s): 13% UsedMem: 32%
+Cpu(s): 10% UsedMem: 32%
+Cpu(s): 9% UsedMem: 32%
+Cpu(s): 13% UsedMem: 32%
+Cpu(s): 11% UsedMem: 32%
+Cpu(s): 8% UsedMem: 32%
+Cpu(s): 12% UsedMem: 32%
 ```
 Installing
 ----------
