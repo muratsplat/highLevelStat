@@ -25,6 +25,8 @@ func TestTakeSnapShotOnMemInfo(t *testing.T) {
 
 	var tT memRaw
 
+	procMemInfo = "./testFiles/proc_meminfo1"
+
 	if tT.takeSnapShot().MemTotal == 0 {
 
 		t.Error("Expected the value is not zero(0), got : ", 0)

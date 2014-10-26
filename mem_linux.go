@@ -48,7 +48,7 @@ func (ky *keyAndValueInMemInfo) pickupKeyAndValueInmemInfo(s string) *keyAndValu
 
 }
 
-const procMemInfo string = "/proc/meminfo"
+var procMemInfo string = "/proc/meminfo"
 
 func (m memRaw) takeSnapShot() memRaw {
 
