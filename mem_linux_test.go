@@ -5,16 +5,16 @@ package highlevelstat
 
 import "testing"
 
-func TestCatchAndValueInmmemInfo(t *testing.T) {
+func TestpickupKeyAndValueInmemInfo(t *testing.T) {
 
 	var tT keyAndValueInMemInfo
 
-	if tT.catchKeyAndValueInmemInfo("MemTotal:        3759720 kB").key != "MemTotal:" {
+	if tT.pickupKeyAndValueInmemInfo("MemTotal:        3759720 kB").key != "MemTotal:" {
 
-		t.Error("Expected `MemTotal:`, got ", tT.catchKeyAndValueInmemInfo("MemTotal:        3759720 kB").key)
+		t.Error("Expected `MemTotal:`, got ", tT.pickupKeyAndValueInmemInfo("MemTotal:        3759720 kB").key)
 	}
 
-	if tT.catchKeyAndValueInmemInfo("MemTotal:        999 kB").value == 3759720 {
+	if tT.pickupKeyAndValueInmemInfo("MemTotal:        999 kB").value == 3759720 {
 
 		t.Error("Expected the value  should  be `999`, got ", 3759720)
 	}

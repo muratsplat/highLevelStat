@@ -31,13 +31,14 @@ type MemInfo struct {
 	PercentOfBuffersedMem    float32
 }
 
-// catch struct for file that "/proc/meminfo"
+// pick up struct for file that "/proc/meminfo"
 type keyAndValueInMemInfo struct {
 	key   string
 	value uint64
 }
 
-func (ky *keyAndValueInMemInfo) catchKeyAndValueInmemInfo(s string) *keyAndValueInMemInfo {
+// simple pick uper for key and value in "/proc/meminfo" file
+func (ky *keyAndValueInMemInfo) pickupKeyAndValueInmemInfo(s string) *keyAndValueInMemInfo {
 
 	ky.key = str.Fields(s)[0]
 
@@ -65,7 +66,7 @@ func (m memRaw) takeSnapShot() memRaw {
 
 	for scanner.Scan() {
 
-		switch ky.catchKeyAndValueInmemInfo(scanner.Text()).key {
+		switch ky.pickupKeyAndValueInmemInfo(scanner.Text()).key {
 
 		case "MemTotal:":
 			m.MemTotal = ky.value
