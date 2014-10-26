@@ -24,7 +24,7 @@ func TestpickupKeyAndValueInmemInfo(t *testing.T) {
 func TestTakeSnapShotOnMemInfo(t *testing.T) {
 
 	var tT memRaw
-
+	// changing the path of file for testing
 	procMemInfo = "./testFiles/proc_meminfo1"
 
 	if tT.takeSnapShot().MemTotal == 0 {

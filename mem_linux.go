@@ -50,6 +50,7 @@ func (ky *keyAndValueInMemInfo) pickupKeyAndValueInmemInfo(s string) *keyAndValu
 
 var procMemInfo string = "/proc/meminfo"
 
+// to take snapshot of the status of memory
 func (m memRaw) takeSnapShot() memRaw {
 
 	file, err := os.Open(procMemInfo)
@@ -91,6 +92,7 @@ func (m memRaw) takeSnapShot() memRaw {
 
 }
 
+// to calculate percents of used mem, readable used mem, cached mem and buffered mem
 func calculateMemInfo(m memRaw) *MemInfo {
 
 	return &MemInfo{
@@ -106,6 +108,7 @@ func calculateMemInfo(m memRaw) *MemInfo {
 
 }
 
+// to get proccesed MemInfo struct
 func (s SystemStatus) GetMemInfo() *MemInfo {
 
 	var mem memRaw
