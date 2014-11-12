@@ -7,7 +7,6 @@ import (
 	"bufio"
 	"log"
 	"os"
-
 	//"runtime"
 	//"strconv"
 	str "strings"
@@ -48,6 +47,8 @@ func (ky *keyAndValueInMemInfo) pickupKeyAndValueInmemInfo(s string) *keyAndValu
 
 }
 
+// the path of Gnu/linux kernel file
+// this value is changeble for testing
 var procMemInfo string = "/proc/meminfo"
 
 // to take snapshot of the status of memory
@@ -92,7 +93,8 @@ func (m memRaw) takeSnapShot() memRaw {
 
 }
 
-// to calculate percents of used mem, readable used mem, cached mem and buffered mem
+// to calculate percents of used mem, readable used mem,
+// cached mem and buffered mem
 func calculateMemInfo(m memRaw) *MemInfo {
 
 	return &MemInfo{
