@@ -19,7 +19,6 @@ package main
 import (
 	"fmt"
 	"github.com/muratsplat/highLevelStat"
-	
 )
 
 func main() {
@@ -30,17 +29,21 @@ func main() {
 
 			var test highlevelstat.SystemStatus
 
-			fmt.Printf("Cpu(s): %.f%% UsedMem: %.f%%\n", test.GetCpuUsage().CpuUsage, GetMemInfo().GetUsedMemForHuman())
+			// getting information the structer of memory
+			var memInfo *highlevelstat.MemInfo = highlevelstat.GetMemInfo()
+
+			fmt.Printf("Cpu(s): %.f%% UsedMem: %.f%%\n", test.GetCpuUsage().CpuUsage, memInfo.GetUsedMemForHuman())
+
 		}
 
 	}()
+	
+	// To block main method by working fmt.Scanln() method
+	var in string
 
-	var input string
-
-	fmt.Scanln(&input)
+	fmt.Scanln(&in)
 
 }
-
 ```
 
 output:
