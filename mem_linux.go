@@ -7,10 +7,7 @@ import (
 	"bufio"
 	"log"
 	"os"
-	//"runtime"
-	//"strconv"
 	str "strings"
-	//"time"
 )
 
 // memRaw data struct to create MemInfo struct
@@ -49,12 +46,12 @@ func (ky *keyAndValueInMemInfo) pickupKeyAndValueInmemInfo(s string) *keyAndValu
 
 // the path of Gnu/linux kernel file
 // this value is changeble for testing
-var procMemInfo string = "/proc/meminfo"
+var procMemInfoPath string = "/proc/meminfo"
 
 // to take snapshot of the status of memory
 func (m memRaw) takeSnapShot() memRaw {
 
-	file, err := os.Open(procMemInfo)
+	file, err := os.Open(procMemInfoPath)
 
 	if err != nil {
 
@@ -111,7 +108,7 @@ func calculateMemInfo(m memRaw) *MemInfo {
 }
 
 // to get proccesed MemInfo struct
-func (s SystemStatus) GetMemInfo() *MemInfo {
+func GetMemInfo() *MemInfo {
 
 	var mem memRaw
 
@@ -120,4 +117,11 @@ func (s SystemStatus) GetMemInfo() *MemInfo {
 	memInfo := calculateMemInfo(raw)
 
 	return memInfo
+}
+
+// to get used mem which is without caches ana buffers
+// For mostly people it may be suitable
+func (m *MemInfo) GetUsedMemForHuman() float32 {
+
+	return m.PercentOfUsedMemForHuman
 }
