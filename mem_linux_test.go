@@ -21,11 +21,18 @@ func TestpickupKeyAndValueInmemInfo(t *testing.T) {
 
 }
 
+// a helper for changing the proc file path
+func setProcMemInfoPath() {
+
+	// changing the path of file for testing
+	procMemInfoPath = "./testFiles/proc_meminfo1"
+}
+
 func TestTakeSnapShotOnMemInfo(t *testing.T) {
 
 	var tT memRaw
-	// changing the path of file for testing
-	procMemInfo = "./testFiles/proc_meminfo1"
+
+	setProcMemInfoPath()
 
 	if tT.takeSnapShot().MemTotal == 0 {
 
@@ -104,9 +111,7 @@ func TestCalculateAllMemInfo(t *testing.T) {
 
 func TestGetMemInfo(t *testing.T) {
 
-	var tT SystemStatus
-
-	info := tT.GetMemInfo()
+	info := GetMemInfo()
 
 	if info.PercentOfUsedMem == 0 {
 
@@ -128,4 +133,20 @@ func TestGetMemInfo(t *testing.T) {
 
 		t.Error("Expected the value is not 0, got", info.PercentOfBuffersedMem)
 	}
+}
+
+func TestGetUsedMemForHuman(t *testing.T) {
+
+	setProcMemInfoPath()
+
+	info := GetMemInfo()
+
+	if info.GetUsedMemForHuman() == 0.0 {
+
+		t.Error("Expected the value is not 0, got ", info.GetUsedMemForHuman())
+
+	}
+
+	t.Log("percent of used mem without caches and buffers is ", info.GetUsedMemForHuman())
+
 }

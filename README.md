@@ -1,6 +1,6 @@
 highLevelStat
 =============
-[![Build Status](https://travis-ci.org/MURATSPLAT/highLevelStat.svg)](https://travis-ci.org/MURATSPLAT/highLevelStat)
+[![Build Status](https://travis-ci.org/muratsplat/highLevelStat.svg)](https://travis-ci.org/muratsplat/highLevelStat)
 
 
 A basic Go Package that gets system the percent of cpu(s) usage on only Gnu/Linux Os.
@@ -18,7 +18,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/MURATSPLAT/highLevelStat"
+	"github.com/muratsplat/highLevelStat"
 	
 )
 
@@ -30,8 +30,7 @@ func main() {
 
 			var test highlevelstat.SystemStatus
 
-			fmt.Printf("Cpu(s): %.f%% UsedMem: %.f%%\n", test.GetCpuUsage().CpuUsage, test.GetMemInfo().PercentOfUsedMemForHuman)
-
+			fmt.Printf("Cpu(s): %.f%% UsedMem: %.f%%\n", test.GetCpuUsage().CpuUsage, GetMemInfo().GetUsedMemForHuman())
 		}
 
 	}()
@@ -61,10 +60,10 @@ Installing
 ----------
  to download the package by using "get" parameter via go such as..
 ```sh
-$ go get github.com/MURATSPLAT/highLevelStat
+$ go get github.com/muratsplat/highLevelStat
 ```
 Include in your source code:
 
-    import "github.com/MURATSPLAT/highLevelStat"
+    import "github.com/muratsplat/highLevelStat"
 
 
