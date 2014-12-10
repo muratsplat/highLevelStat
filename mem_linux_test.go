@@ -147,6 +147,6 @@ func TestGetUsedMemForHuman(t *testing.T) {
 
 	}
 
-	t.Log("percemt of used mem without caches and buffers is ", info.GetUsedMemForHuman())
+	t.Log("percent of used mem without caches and buffers is ", info.GetUsedMemForHuman())
 
 }
