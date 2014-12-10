@@ -115,7 +115,7 @@ func (s *snapShotsCPU) getSnapShots() []snapShotsCPU {
 
 		i++
 
-		time.Sleep(time.Millisecond * time.Duration(sampleRangeOfTime))
+		time.Sleep(time.Millisecond * time.Duration(sampleTimeOfRange))
 
 	}
 

@@ -41,3 +41,15 @@ func TestIsSupported(t *testing.T) {
 	}
 
 }
+
+func TestSetSampleTimeOfRange(t *testing.T) {
+
+	SetTimeOfRangeForCpuStat(600)
+
+	if sampleTimeOfRange != float64(600) {
+
+		t.Error("Expected 600, got ", sampleTimeOfRange)
+
+	}
+
+}

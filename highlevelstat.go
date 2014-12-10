@@ -9,32 +9,32 @@
 //
 // Examle use:
 //
-//package main
+//	package main
 //
-//import (
-//    "fmt"
-//    "github.com/MURATSPLAT/highLevelStat"
+//	import (
+//		"fmt"
+//		"github.com/muratsplat/highLevelStat"
+//	)
 //
-//)
+//	func main() {
 //
-//func main() {
+//	go func() {
 //
-//    go func() {
+//		for {
 //
-//        for {
+//			var test highlevelstat.SystemStatus
+//			// getting information the structer of memory
+//			var memInfo *highlevelstat.MemInfo = highlevelstat.GetMemInfo()
 //
-//            var test highlevelstat.SystemStatus
+//			fmt.Printf("Cpu(s): %.f%% UsedMem: %.f%%\n", test.GetCpuUsage().CpuUsage, memInfo.GetUsedMemForHuman())
 //
-//            fmt.Printf("Cpu(s): %.f%%\n", test.GetCpuUsage().CpuUsage)
+//		}
 //
-//        }
+//	}()
 //
-//    }()
+//	var in string
 //
-//    var input string
-//
-//    fmt.Scanln(&input)
-//
+//	fmt.Scanln(&in)
 //}
 package highlevelstat
 
@@ -98,7 +98,7 @@ type SystemStatus struct {
 
 // The package's values
 var (
-	sampleRangeOfTime   float64 = 300 // it  will convert to type of Milisecond
+	sampleTimeOfRange   float64 = 300 // it  will convert to type of Milisecond
 	pathProcStatOnLinux string  = "/proc/stat"
 )
 
@@ -139,4 +139,12 @@ func convertStringToUint64(s string) uint64 {
 	}
 
 	return number
+}
+
+// to set the time of range for the sample of Cpu Stat.
+// value type  is millisecond. For 1(one) second
+// 1000 millisecond
+func SetTimeOfRangeForCpuStat(t int) {
+
+	sampleTimeOfRange = float64(t)
 }
