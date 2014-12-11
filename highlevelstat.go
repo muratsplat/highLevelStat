@@ -140,11 +140,3 @@ func convertStringToUint64(s string) uint64 {
 
 	return number
 }
-
-// to set the time of range for the sample of Cpu Stat.
-// value type  is millisecond. For 1(one) second
-// 1000 millisecond
-func SetTimeOfRangeForCpuStat(t int) {
-
-	sampleTimeOfRange = float64(t)
-}
