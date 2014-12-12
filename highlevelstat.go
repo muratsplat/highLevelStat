@@ -93,7 +93,7 @@ type SystemStatus struct {
 	// all cpu usage
 	CpuUsage float32
 
-	MemInfo
+	*MemInfo
 }
 
 // The package's values
