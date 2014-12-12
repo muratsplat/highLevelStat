@@ -7,9 +7,9 @@
 //
 // The package is experimental!!!
 //
-//	Examle use:
+//Examle use:
 //
-//func main() {
+//	func main() {
 //
 //	// to set the time of range Cpu Sample Stat
 //	highlevelstat.SetTimeOfRangeForCpuStat(1000) // 1 second
@@ -32,9 +32,8 @@
 //
 //	fmt.Scanln(&in)
 //
-//}
+//	}
 //
-
 package highlevelstat
 
 import (
