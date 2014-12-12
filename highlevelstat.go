@@ -1,7 +1,7 @@
 // Copyright (C) 2014  Murat ÖDÜNÇ
 // murat.asya@gmail.com, http://muratodunc.wordpress.com
 // See LICENSES.md file to know details the license
-
+//
 // The package simply generates the information of system status such as
 // the percent of cpu(s) usage, mem, network, disk and something like that..
 //
