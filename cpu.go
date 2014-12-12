@@ -10,6 +10,50 @@ import (
 	"time"
 )
 
+//  This struct  is for each one of all cpus
+// referance : http://www.linuxhowtos.org/System/procstat.htm
+type sampleCpuStat struct {
+
+	// processes executing is user mode
+	//such as Firefox, Mplayer...
+	user uint64
+
+	nice uint64
+
+	// processes executing is system mode
+	//such as kernel processes
+	system uint64
+
+	//idle: twiddling thumbs
+	idle uint64
+
+	//iowait: waiting for I/O to complete
+	iowait uint64
+
+	//irq: servicing interrupts
+	irq uint64
+
+	//softirq: servicing softirqs
+	softirq uint64
+
+	// sum of total all values
+	sumOfall uint64
+
+	// sum of user, nice  and system
+	sumOfUserNiceSystem uint64
+}
+
+// SnapShots Structer
+type snapShotsCPU struct {
+	cpu sampleCpuStat
+}
+
+// System Status struct is readable for human
+type Cpu struct {
+	// all cpu usage
+	CpuUsage float32
+}
+
 // to take snapshot that state CPU
 // between in first time point and second time point.
 func (sample snapShotsCPU) takeSnapShot() snapShotsCPU {
@@ -78,9 +122,11 @@ func (cpu *sampleCpuStat) calculateToAll() {
 }
 
 // To get the percent of CPU(s) usage on linux
-func (s *SystemStatus) GetCpuUsage() *SystemStatus {
+func NewCpuUsage() *Cpu {
 
 	var snaps snapShotsCPU
+
+	var cpuUsage float32
 
 	snapshots := snaps.getSnapShots()
 
@@ -91,14 +137,12 @@ func (s *SystemStatus) GetCpuUsage() *SystemStatus {
 	// totalOverPeriod
 	if workOverPeriod == totalOverPeriod {
 
-		s.CpuUsage = float32(0)
+		cpuUsage = float32(0)
 
-		return s
+		return &Cpu{cpuUsage}
 	}
 
-	s.CpuUsage = float32((workOverPeriod / totalOverPeriod) * 100.00)
-
-	return s
+	return &Cpu{float32((workOverPeriod / totalOverPeriod) * 100.00)}
 
 }
 

@@ -111,7 +111,7 @@ func TestCalculateAllMemInfo(t *testing.T) {
 
 func TestGetMemInfo(t *testing.T) {
 
-	info := GetMemInfo()
+	info := NewMemInfo()
 
 	if info.PercentOfUsedMem == 0 {
 
@@ -139,14 +139,14 @@ func TestGetUsedMemForHuman(t *testing.T) {
 
 	setProcMemInfoPath()
 
-	info := GetMemInfo()
+	info := NewMemInfo()
 
-	if info.GetUsedMemForHuman() == 0.0 {
+	if info.UsedMemForHuman() == 0.0 {
 
-		t.Error("Expected the value is not 0, got ", info.GetUsedMemForHuman())
+		t.Error("Expected the value is not 0, got ", info.UsedMemForHuman())
 
 	}
 
-	t.Log("percent of used mem without caches and buffers is ", info.GetUsedMemForHuman())
+	t.Log("percent of used mem without caches and buffers is ", info.UsedMemForHuman())
 
 }

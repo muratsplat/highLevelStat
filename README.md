@@ -23,27 +23,29 @@ import (
 
 func main() {
 
+	// to set the time of range Cpu Sample Stat
+	highlevelstat.SetTimeOfRangeForCpuStat(1000) // 1 second
+
 	go func() {
 
 		for {
 
-			var test highlevelstat.SystemStatus
+			cpu := highlevelstat.NewCpuUsage()
+		
+			memInfo := highlevelstat.NewMemInfo()
 
-			// getting information the structer of memory
-			var memInfo *highlevelstat.MemInfo = highlevelstat.GetMemInfo()
-
-			fmt.Printf("Cpu(s): %.f%% UsedMem: %.f%%\n", test.GetCpuUsage().CpuUsage, memInfo.GetUsedMemForHuman())
+			fmt.Printf("Cpu(s): %.f%% UsedMem: %.f%%\n", cpu.CpuUsage, memInfo.UsedMemForHuman())
 
 		}
 
 	}()
-	
-	// To block main method by working fmt.Scanln() method
+
 	var in string
 
 	fmt.Scanln(&in)
 
 }
+
 ```
 
 output:

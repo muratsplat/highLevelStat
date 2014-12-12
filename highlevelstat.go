@@ -7,26 +7,22 @@
 //
 // The package is experimental!!!
 //
-// Examle use:
+//	Examle use:
 //
-//	package main
+//func main() {
 //
-//	import (
-//		"fmt"
-//		"github.com/muratsplat/highLevelStat"
-//	)
-//
-//	func main() {
+//	// to set the time of range Cpu Sample Stat
+//	highlevelstat.SetTimeOfRangeForCpuStat(1000) // 1 second
 //
 //	go func() {
 //
 //		for {
 //
-//			var test highlevelstat.SystemStatus
-//			// getting information the structer of memory
-//			var memInfo *highlevelstat.MemInfo = highlevelstat.GetMemInfo()
+//			cpu := highlevelstat.NewCpuUsage()
 //
-//			fmt.Printf("Cpu(s): %.f%% UsedMem: %.f%%\n", test.GetCpuUsage().CpuUsage, memInfo.GetUsedMemForHuman())
+//			memInfo := highlevelstat.NewMemInfo()
+//
+//			fmt.Printf("Cpu(s): %.f%% UsedMem: %.f%%\n", cpu.CpuUsage, memInfo.UsedMemForHuman())
 //
 //		}
 //
@@ -35,7 +31,10 @@
 //	var in string
 //
 //	fmt.Scanln(&in)
+//
 //}
+//
+
 package highlevelstat
 
 import (
@@ -49,51 +48,6 @@ type env struct {
 	support      bool
 	numberOfCpus int
 	err          error
-}
-
-//  This struct  is for each one of all cpus
-// referance : http://www.linuxhowtos.org/System/procstat.htm
-type sampleCpuStat struct {
-
-	// processes executing is user mode
-	//such as Firefox, Mplayer...
-	user uint64
-
-	nice uint64
-
-	// processes executing is system mode
-	//such as kernel processes
-	system uint64
-
-	//idle: twiddling thumbs
-	idle uint64
-
-	//iowait: waiting for I/O to complete
-	iowait uint64
-
-	//irq: servicing interrupts
-	irq uint64
-
-	//softirq: servicing softirqs
-	softirq uint64
-
-	// sum of total all values
-	sumOfall uint64
-
-	// sum of user, nice  and system
-	sumOfUserNiceSystem uint64
-}
-
-type snapShotsCPU struct {
-	cpu sampleCpuStat
-}
-
-// System Status struct is readable for human
-type SystemStatus struct {
-	// all cpu usage
-	CpuUsage float32
-
-	*MemInfo
 }
 
 // The package's values

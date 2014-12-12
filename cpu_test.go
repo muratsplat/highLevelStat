@@ -77,11 +77,11 @@ func TestGetSnapShots(t *testing.T) {
 
 func TestGetCpuUsage(t *testing.T) {
 
-	var sS SystemStatus
+	sS := NewCpuUsage()
 
-	if sS.GetCpuUsage().CpuUsage != float32(0) {
+	if sS.CpuUsage != float32(0) {
 
-		t.Error("Expected 0, got ", sS.GetCpuUsage().CpuUsage)
+		t.Error("Expected 0, got ", sS.CpuUsage)
 
 	}
 
