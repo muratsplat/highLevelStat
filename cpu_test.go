@@ -4,6 +4,7 @@ package highlevelstat
 
 import (
 	"testing"
+	"time"
 )
 
 func TestTakeSnapShot(t *testing.T) {
@@ -56,6 +57,8 @@ func TestTakeSnapShot(t *testing.T) {
 func TestGetSnapShots(t *testing.T) {
 
 	var tS snapShotsCPU
+	// for quick test
+	SetTimeOfRangeForCpuStat(time.Millisecond * 300)
 
 	snaps := tS.getSnapShots()
 
@@ -89,9 +92,9 @@ func TestGetCpuUsage(t *testing.T) {
 
 func TestSetSampleTimeOfRange(t *testing.T) {
 
-	SetTimeOfRangeForCpuStat(600)
+	SetTimeOfRangeForCpuStat(time.Millisecond * 200)
 
-	if sampleTimeOfRange != float64(600) {
+	if sampleTimeOfRange != time.Millisecond*200 {
 
 		t.Error("Expected 600, got ", sampleTimeOfRange)
 

@@ -39,6 +39,7 @@ package highlevelstat
 import (
 	"runtime"
 	"strconv"
+	"time"
 )
 
 // Environment Struct
@@ -51,8 +52,8 @@ type env struct {
 
 // The package's values
 var (
-	sampleTimeOfRange   float64 = 300 // it  will convert to type of Milisecond
-	pathProcStatOnLinux string  = "/proc/stat"
+	sampleTimeOfRange   time.Duration = time.Millisecond * 1000
+	pathProcStatOnLinux string        = "/proc/stat"
 )
 
 // to detect environment. Unit now only Gnu/linux Os is supported.
