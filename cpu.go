@@ -34,6 +34,12 @@ func (sample snapShotsCPU) takeSnapShot() snapShotsCPU {
 
 	scanner := bufio.NewScanner(file)
 
+	if scanner == nil {
+
+		log.Println("Retuned NewScanner Pointer is not valid")
+
+	}
+
 	for i := 0; scanner.Scan(); i++ {
 
 		// user: normal processes executing in user mode
