@@ -23,11 +23,10 @@ import (
 
 func main() {
 
-	// seting time range valu in the package..
-	// This value only effects the range time duration of cpu status samples..
-
 	var duration  int64 = 50 // millisecond
 
+	// setting time range value in the package..
+	// This value only effects the range time duration of cpu status samples..	
 	stat.SetTimeOfRangeForCpuStat(duration)
 
 	go func() {
