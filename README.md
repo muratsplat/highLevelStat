@@ -18,29 +18,33 @@ package main
 
 import (
 	"fmt"
-	"github.com/muratsplat/highLevelStat"
+	stat "github.com/muratsplat/highLevelStat"
 )
 
 func main() {
 
+	// seting time range valu in the package..
+	// This value only effects the range time duration of cpu status samples..
+
+	var duration  int64 = 50 // millisecond
+
+	stat.SetTimeOfRangeForCpuStat(duration)
+
 	go func() {
 
 		for {
-
-			var test highlevelstat.SystemStatus
-
+			var test stat.SystemStatus
 			// getting information the structer of memory
-			var memInfo *highlevelstat.MemInfo = highlevelstat.GetMemInfo()
+
+			var memInfo *stat.MemInfo = stat.GetMemInfo()
 
 			fmt.Printf("Cpu(s): %.f%% UsedMem: %.f%%\n", test.GetCpuUsage().CpuUsage, memInfo.GetUsedMemForHuman())
-
 		}
-
 	}()
-	
-	// To block main method by working fmt.Scanln() method
-	var in string
 
+	// To block main method by working fmt.Scanln() method
+
+	var in string
 	fmt.Scanln(&in)
 
 }
