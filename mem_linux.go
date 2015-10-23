@@ -92,9 +92,9 @@ func (m memRaw) takeSnapShot() memRaw {
 
 // to calculate percents of used mem, readable used mem,
 // cached mem and buffered mem
-func calculateMemInfo(m memRaw) *MemInfo {
+func calculateMemInfo(m memRaw) MemInfo {
 
-	return &MemInfo{
+	return MemInfo{
 
 		PercentOfUsedMem: (float32(m.MemTotal-m.MemFree) / float32(m.MemTotal)) * 100.0,
 
@@ -108,7 +108,7 @@ func calculateMemInfo(m memRaw) *MemInfo {
 }
 
 // to get proccesed MemInfo struct
-func GetMemInfo() *MemInfo {
+func GetMemInfo() MemInfo {
 
 	var mem memRaw
 
@@ -121,7 +121,7 @@ func GetMemInfo() *MemInfo {
 
 // to get used mem which is without caches ana buffers
 // For mostly people it may be suitable
-func (m *MemInfo) GetUsedMemForHuman() float32 {
+func (m MemInfo) GetUsedMemForHuman() float32 {
 
 	return m.PercentOfUsedMemForHuman
 }

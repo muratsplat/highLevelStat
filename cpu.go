@@ -10,9 +10,46 @@ import (
 	"time"
 )
 
+//  This struct  is for each one of all cpus
+// referance : http://www.linuxhowtos.org/System/procstat.htm
+type sampleCpuStat struct {
+
+	// processes executing is user mode
+	//such as Firefox, Mplayer...
+	user uint64
+
+	nice uint64
+
+	// processes executing is system mode
+	//such as kernel processes
+	system uint64
+
+	//idle: twiddling thumbs
+	idle uint64
+
+	//iowait: waiting for I/O to complete
+	iowait uint64
+
+	//irq: servicing interrupts
+	irq uint64
+
+	//softirq: servicing softirqs
+	softirq uint64
+
+	// sum of total all values
+	sumOfall uint64
+
+	// sum of user, nice  and system
+	sumOfUserNiceSystem uint64
+}
+
+type snapShotsCPU struct {
+	cpu sampleCpuStat
+}
+
 // to take snapshot that state CPU
 // between in first time point and second time point.
-func (sample snapShotsCPU) takeSnapShot() snapShotsCPU {
+func takeSnapShot() snapShotsCPU {
 
 	var e env
 
@@ -24,6 +61,7 @@ func (sample snapShotsCPU) takeSnapShot() snapShotsCPU {
 	}
 
 	file, err := os.Open(pathProcStatOnLinux)
+
 	if err != nil {
 
 		log.Fatalln("It looks that the file was not existed: ", pathProcStatOnLinux)
@@ -39,6 +77,8 @@ func (sample snapShotsCPU) takeSnapShot() snapShotsCPU {
 		log.Println("Retuned NewScanner Pointer is not valid")
 
 	}
+
+	var sample snapShotsCPU
 
 	for i := 0; scanner.Scan(); i++ {
 
@@ -74,6 +114,24 @@ func (sample snapShotsCPU) takeSnapShot() snapShotsCPU {
 
 }
 
+// To get two snaphots of cpu(s) state
+func getSnapShotsOfCpu() []snapShotsCPU {
+
+	snapShots := make([]snapShotsCPU, 2)
+
+	for i := 0; i < len(snapShots); {
+
+		snapShots[i] = takeSnapShot()
+
+		i++
+
+		time.Sleep(time.Millisecond * time.Duration(sampleTimeOfRange))
+
+	}
+
+	return snapShots
+}
+
 // To calculate the plus of single cpu values
 func (cpu *sampleCpuStat) calculateToAll() {
 
@@ -84,11 +142,9 @@ func (cpu *sampleCpuStat) calculateToAll() {
 }
 
 // To get the percent of CPU(s) usage on linux
-func (s *SystemStatus) GetCpuUsage() *SystemStatus {
+func (s SystemStatus) GetCpuUsage() SystemStatus {
 
-	var snaps snapShotsCPU
-
-	snapshots := snaps.getSnapShots()
+	snapshots := getSnapShotsOfCpu()
 
 	workOverPeriod := float32(snapshots[1].cpu.sumOfUserNiceSystem - snapshots[0].cpu.sumOfUserNiceSystem)
 	totalOverPeriod := float32(snapshots[1].cpu.sumOfall - snapshots[0].cpu.sumOfall)
@@ -106,26 +162,6 @@ func (s *SystemStatus) GetCpuUsage() *SystemStatus {
 
 	return s
 
-}
-
-// To get two snaphots of cpu(s) state
-func (s *snapShotsCPU) getSnapShots() []snapShotsCPU {
-
-	var samples snapShotsCPU
-
-	snapShots := make([]snapShotsCPU, 2)
-
-	for i := 0; i < len(snapShots); {
-
-		snapShots[i] = samples.takeSnapShot()
-
-		i++
-
-		time.Sleep(time.Millisecond * time.Duration(sampleTimeOfRange))
-
-	}
-
-	return snapShots
 }
 
 // to set the time of range for the sample of Cpu Stat.

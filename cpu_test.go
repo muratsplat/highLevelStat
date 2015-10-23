@@ -10,9 +10,7 @@ func TestTakeSnapShot(t *testing.T) {
 	// let's use our stat file
 	pathProcStatOnLinux = "./testFiles/proc_stat1"
 
-	var testSample snapShotsCPU
-
-	var tsample snapShotsCPU = testSample.takeSnapShot()
+	var tsample snapShotsCPU = takeSnapShot()
 
 	if tsample.cpu.user == uint64(0) {
 
@@ -55,9 +53,7 @@ func TestTakeSnapShot(t *testing.T) {
 
 func TestGetSnapShots(t *testing.T) {
 
-	var tS snapShotsCPU
-
-	snaps := tS.getSnapShots()
+	snaps := getSnapShotsOfCpu()
 
 	if len(snaps) != 2 {
 
