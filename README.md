@@ -23,11 +23,9 @@ import (
 
 func main() {
 
-	var duration  int64 = 50 // millisecond
-
 	// setting time range value in the package..
 	// This value only effects the range time duration of cpu status samples..	
-	stat.SetTimeOfRangeForCpuStat(duration)
+	statSetTimeOfRangeForCpuStat(500 * time.Millisecond) // 0.5 second
 
 	go func() {
 
@@ -35,7 +33,7 @@ func main() {
 			var test stat.SystemStatus
 			// getting information the structer of memory
 
-			var memInfo *stat.MemInfo = stat.GetMemInfo()
+			memInfo := stat.GetMemInfo()
 
 			fmt.Printf("Cpu(s): %.f%% UsedMem: %.f%%\n", test.GetCpuUsage().CpuUsage, memInfo.GetUsedMemForHuman())
 		}
