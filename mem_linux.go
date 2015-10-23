@@ -20,8 +20,7 @@ type memRaw struct {
 
 // readable struct for humans
 type MemInfo struct {
-	PercentOfUsedMem float32
-
+	PercentOfUsedMem         float32
 	PercentOfUsedMemForHuman float32
 	PercentOfCachedMem       float32
 	PercentOfBuffersedMem    float32
@@ -34,7 +33,9 @@ type keyAndValueInMemInfo struct {
 }
 
 // simple pick uper for key and value in "/proc/meminfo" file
-func (ky *keyAndValueInMemInfo) pickupKeyAndValueInmemInfo(s string) *keyAndValueInMemInfo {
+func pickupKeyAndValueInmemInfo(s string) keyAndValueInMemInfo {
+
+	var ky keyAndValueInMemInfo
 
 	ky.key = str.Fields(s)[0]
 
@@ -61,11 +62,11 @@ func (m memRaw) takeSnapShot() memRaw {
 
 	scanner := bufio.NewScanner(file)
 
-	var ky keyAndValueInMemInfo
-
 	for scanner.Scan() {
 
-		switch ky.pickupKeyAndValueInmemInfo(scanner.Text()).key {
+		ky := pickupKeyAndValueInmemInfo(scanner.Text())
+
+		switch ky.key {
 
 		case "MemTotal:":
 			m.MemTotal = ky.value

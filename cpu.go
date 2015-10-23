@@ -125,7 +125,7 @@ func getSnapShotsOfCpu() []snapShotsCPU {
 
 		i++
 
-		time.Sleep(time.Millisecond * time.Duration(sampleTimeOfRange))
+		time.Sleep(sampleTimeOfRange)
 
 	}
 
@@ -167,7 +167,7 @@ func (s SystemStatus) GetCpuUsage() SystemStatus {
 // to set the time of range for the sample of Cpu Stat.
 // value type  is millisecond. For 1(one) second
 // 1000 millisecond
-func SetTimeOfRangeForCpuStat(t int64) {
+func SetTimeOfRangeForCpuStat(t time.Duration) {
 
 	sampleTimeOfRange = t
 }

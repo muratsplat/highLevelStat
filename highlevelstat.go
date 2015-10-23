@@ -41,6 +41,7 @@ package highlevelstat
 import (
 	"runtime"
 	"strconv"
+	"time"
 )
 
 // Environment Struct
@@ -56,13 +57,13 @@ type SystemStatus struct {
 	// all cpu usage
 	CpuUsage float32
 
-	*MemInfo
+	MemInfo
 }
 
 // The package's values
 var (
-	sampleTimeOfRange   int64  = 1000 // it  will convert to type of Milisecond
-	pathProcStatOnLinux string = "/proc/stat"
+	sampleTimeOfRange   time.Duration = time.Duration(1000 * time.Millisecond)
+	pathProcStatOnLinux string        = "/proc/stat"
 )
 
 // to detect environment. Unit now only Gnu/linux Os is supported.

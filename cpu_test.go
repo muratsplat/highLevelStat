@@ -70,27 +70,3 @@ func TestGetSnapShots(t *testing.T) {
 	}
 
 }
-
-func TestGetCpuUsage(t *testing.T) {
-
-	var sS SystemStatus
-
-	if sS.GetCpuUsage().CpuUsage != float32(0) {
-
-		t.Error("Expected 0, got ", sS.GetCpuUsage().CpuUsage)
-
-	}
-
-}
-
-func TestSetSampleTimeOfRange(t *testing.T) {
-
-	SetTimeOfRangeForCpuStat(600)
-
-	if sampleTimeOfRange != int64(600) {
-
-		t.Error("Expected 600, got ", sampleTimeOfRange)
-
-	}
-
-}
