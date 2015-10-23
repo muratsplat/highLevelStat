@@ -98,8 +98,8 @@ type SystemStatus struct {
 
 // The package's values
 var (
-	sampleTimeOfRange   float64 = 300 // it  will convert to type of Milisecond
-	pathProcStatOnLinux string  = "/proc/stat"
+	sampleTimeOfRange   int64  = 1000 // it  will convert to type of Milisecond
+	pathProcStatOnLinux string = "/proc/stat"
 )
 
 // to detect environment. Unit now only Gnu/linux Os is supported.
